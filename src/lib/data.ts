@@ -80,8 +80,15 @@ export async function getProjectedCutResult(cutId: string) {
   const cut = cuts.find((c) => c.id === cutId);
   if (!cut) return { rows: [] as StandingRow[], winner: null, tied: false };
   const idSet = new Set(cut.matchdayIds);
-  const projected = await getProjectedStandings();
-  const projectedRows = projected.filter((r) => teams.some((t) => t.id === r.teamId));
-  void idSet;
-  return { rows: projectedRows, winner: null, tied: false };
+  const matchdays = await getMatchdays();
+  const estimates = await getEstimates();
+  const projectedMatchdays: MatchdayData[] = [
+    ...matchdays.filter((m) => idSet.has(m.id)),
+    ...estimates
+      .filter((e) => idSet.has(e.matchdayId))
+      .map((e) => ({ id: `estimate:${e.matchdayId}`, played: true, points: e.points })),
+  ];
+  const rows = computeStandings(teams, projectedMatchdays);
+  const { winner, tied } = resolveCutWinner(rows, await getGeneralStandings());
+  return { rows, winner, tied };
 }
