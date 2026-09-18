@@ -82,13 +82,11 @@ export async function getProjectedCutResult(cutId: string) {
   const idSet = new Set(cut.matchdayIds);
   const matchdays = await getMatchdays();
   const estimates = await getEstimates();
-  const projectedMatchdays: MatchdayData[] = [
-    ...matchdays.filter((m) => idSet.has(m.id)),
-    ...estimates
-      .filter((e) => idSet.has(e.matchdayId))
-      .map((e) => ({ id: `estimate:${e.matchdayId}`, played: true, points: e.points })),
-  ];
-  const rows = computeStandings(teams, projectedMatchdays);
+  const rows = projectStandings(
+    teams,
+    matchdays.filter((m) => idSet.has(m.id)),
+    estimates.filter((e) => idSet.has(e.matchdayId)),
+  );
   const { winner, tied } = resolveCutWinner(rows, await getGeneralStandings());
   return { rows, winner, tied };
 }
