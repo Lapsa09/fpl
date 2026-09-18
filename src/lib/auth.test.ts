@@ -27,7 +27,9 @@ describe("auth", () => {
   it("rechaza una firma manipulada", async () => {
     const { signSession, verifySession } = await import("./auth");
     const token = signSession(Date.now() + 10000);
-    expect(verifySession(token.slice(0, -1) + "0")).toBe(false);
+    const last = token.slice(-1);
+    const tampered = token.slice(0, -1) + (last === "0" ? "1" : "0");
+    expect(verifySession(tampered)).toBe(false);
   });
 
   it("rechaza token undefined", async () => {
