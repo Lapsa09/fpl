@@ -19,10 +19,12 @@ export async function createMatchday(formData: FormData) {
 export async function savePoints(matchdayId: string, entries: { teamId: string; points: number }[]) {
   await requireAdmin();
   for (const entry of entries) {
+    const points = Math.trunc(Number(entry.points));
+    if (!Number.isFinite(points) || points < 0) continue;
     await prisma.matchdayPoints.upsert({
       where: { matchdayId_teamId: { matchdayId, teamId: entry.teamId } },
-      update: { points: entry.points },
-      create: { matchdayId, teamId: entry.teamId, points: entry.points },
+      update: { points },
+      create: { matchdayId, teamId: entry.teamId, points },
     });
   }
   revalidatePath("/admin/jornadas");
@@ -31,6 +33,7 @@ export async function savePoints(matchdayId: string, entries: { teamId: string; 
 export async function togglePlayed(formData: FormData) {
   await requireAdmin();
   const id = String(formData.get("id"));
+  if (!id) return;
   const played = formData.get("played") === "true";
   await prisma.matchday.update({ where: { id }, data: { played } });
   revalidatePath("/admin/jornadas");

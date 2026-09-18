@@ -23,8 +23,8 @@ export function PointsForm({
       onSubmit={(event) => {
         event.preventDefault();
         const entries = Object.entries(values)
-          .filter(([, v]) => v !== "")
-          .map(([teamId, v]) => ({ teamId, points: Math.max(0, Number(v)) }));
+          .filter(([, v]) => v !== "" && !Number.isNaN(Number(v)))
+          .map(([teamId, v]) => ({ teamId, points: Math.max(0, Math.trunc(Number(v))) }));
         startTransition(() => {
           void savePoints(matchdayId, entries);
         });
