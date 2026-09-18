@@ -1,0 +1,37 @@
+{
+  "name": "fpl",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "dependencies": {
+    "@prisma/client": "^7.10.0",
+    "@uploadthing/react": "^7.3.3",
+    "next": "15.5.25",
+    "react": "19.1.0",
+    "react-dom": "19.1.0",
+    "uploadthing": "^7.7.4",
+    "zod": "^4.6.5"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3",
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^20.19.43",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "@vitejs/plugin-react": "^6.1.1",
+    "eslint": "^9",
+    "eslint-config-next": "15.5.25",
+    "prisma": "^8.0.0-rc.15",
+    "tailwindcss": "^4",
+    "typescript": "^5",
+    "vite-tsconfig-paths": "^6.1.1",
+    "vitest": "^4.1.11"
+  }
+}
