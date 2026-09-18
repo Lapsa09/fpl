@@ -89,7 +89,7 @@ export async function deletePost(formData: FormData) {
   await requireAdmin();
   const rawId = formData.get("id");
   if (typeof rawId !== "string" || rawId.length === 0) return;
-  await prisma.post.delete({ where: { id: rawId } });
+  await prisma.post.deleteMany({ where: { id: rawId } });
   revalidatePath("/admin/noticias");
   redirect("/admin/noticias");
 }

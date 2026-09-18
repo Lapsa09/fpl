@@ -18,7 +18,7 @@ export async function assignMatchdayToCut(formData: FormData) {
   const matchdayId = String(formData.get("matchdayId") ?? "").trim();
   const cutId = String(formData.get("cutId") ?? "").trim();
   if (!matchdayId) return;
-  await prisma.matchday.update({
+  await prisma.matchday.updateMany({
     where: { id: matchdayId },
     data: { cutId: cutId === "" ? null : cutId },
   });
@@ -30,6 +30,6 @@ export async function toggleCutClosed(formData: FormData) {
   const id = String(formData.get("id") ?? "").trim();
   const closed = formData.get("closed") === "true";
   if (!id) return;
-  await prisma.cut.update({ where: { id }, data: { closed } });
+  await prisma.cut.updateMany({ where: { id }, data: { closed } });
   revalidatePath("/admin/cortes");
 }

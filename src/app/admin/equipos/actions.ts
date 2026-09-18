@@ -15,19 +15,20 @@ export async function createTeam(formData: FormData) {
 
 export async function updateTeam(formData: FormData) {
   await requireAdmin();
-  const id = String(formData.get("id"));
+  const rawId = formData.get("id");
+  if (typeof rawId !== "string" || rawId.length === 0) return;
   const name = String(formData.get("name") ?? "").trim();
   const manager = String(formData.get("manager") ?? "").trim();
   const active = formData.get("active") === "on";
-  if (!id || !name || !manager) return;
-  await prisma.team.update({ where: { id }, data: { name, manager, active } });
+  if (!name || !manager) return;
+  await prisma.team.updateMany({ where: { id: rawId }, data: { name, manager, active } });
   revalidatePath("/admin/equipos");
 }
 
 export async function deleteTeam(formData: FormData) {
   await requireAdmin();
-  const id = String(formData.get("id"));
-  if (!id) return;
-  await prisma.team.delete({ where: { id } });
+  const rawId = formData.get("id");
+  if (typeof rawId !== "string" || rawId.length === 0) return;
+  await prisma.team.deleteMany({ where: { id: rawId } });
   revalidatePath("/admin/equipos");
 }

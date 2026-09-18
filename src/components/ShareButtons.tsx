@@ -22,8 +22,12 @@ export function ShareButtons({ url, title }: { url: string; title: string }) {
       ))}
       <button
         onClick={async () => {
-          await navigator.clipboard.writeText(url);
-          setCopied(true);
+          try {
+            await navigator.clipboard.writeText(url);
+            setCopied(true);
+          } catch {
+            setCopied(false);
+          }
         }}
         className="rounded border px-3 py-1 text-sm hover:bg-neutral-100"
       >

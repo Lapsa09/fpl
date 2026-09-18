@@ -5,11 +5,11 @@ export function StandingsTable({ rows }: { rows: StandingRow[] }) {
     <table className="w-full border-collapse text-sm">
       <thead>
         <tr className="border-b text-left text-neutral-500">
-          <th className="py-2 pr-2">#</th>
-          <th className="py-2 pr-2">Equipo</th>
-          <th className="py-2 pr-2">Manager</th>
-          <th className="py-2 pr-2 text-right">PJ</th>
-          <th className="py-2 text-right">Pts</th>
+          <th scope="col" className="py-2 pr-2">#</th>
+          <th scope="col" className="py-2 pr-2">Equipo</th>
+          <th scope="col" className="py-2 pr-2">Manager</th>
+          <th scope="col" className="py-2 pr-2 text-right">PJ</th>
+          <th scope="col" className="py-2 text-right">Pts</th>
         </tr>
       </thead>
       <tbody>
