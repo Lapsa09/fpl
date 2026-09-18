@@ -3,14 +3,16 @@ import { NewsCard } from "@/components/NewsCard";
 
 export const dynamic = "force-dynamic";
 
-export default async function HomePage() {
+export const metadata = { title: "Noticias" };
+
+export default async function NewsListPage() {
   const posts = await prisma.post.findMany({
     where: { published: true },
     orderBy: { publishedAt: "desc" },
   });
   return (
     <div className="space-y-6">
-      <h1 className="text-3xl font-black">Portada</h1>
+      <h1 className="text-3xl font-black">Noticias</h1>
       {posts.length === 0 ? (
         <p className="text-neutral-500">Todavía no hay noticias publicadas.</p>
       ) : (
