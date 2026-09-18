@@ -32,8 +32,9 @@ export async function savePoints(matchdayId: string, entries: { teamId: string; 
 
 export async function togglePlayed(formData: FormData) {
   await requireAdmin();
-  const id = String(formData.get("id"));
-  if (!id) return;
+  const rawId = formData.get("id");
+  if (typeof rawId !== "string" || rawId.length === 0) return;
+  const id = rawId;
   const played = formData.get("played") === "true";
   await prisma.matchday.update({ where: { id }, data: { played } });
   revalidatePath("/admin/jornadas");
