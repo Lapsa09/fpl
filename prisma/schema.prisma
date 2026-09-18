@@ -1,0 +1,80 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum PostCategory {
+  TRANSFERS
+  DECLARATIONS
+  STATEMENTS
+  GENERAL
+}
+
+model Team {
+  id        String           @id @default(cuid())
+  name      String           @unique
+  manager   String
+  active    Boolean          @default(true)
+  points    MatchdayPoints[]
+  estimates Estimate[]
+  createdAt DateTime         @default(now())
+}
+
+model Matchday {
+  id        String           @id @default(cuid())
+  number    Int              @unique
+  played    Boolean          @default(false)
+  cutId     String?
+  cut       Cut?             @relation(fields: [cutId], references: [id], onDelete: SetNull)
+  points    MatchdayPoints[]
+  estimates Estimate[]
+  createdAt DateTime         @default(now())
+}
+
+model MatchdayPoints {
+  id         String   @id @default(cuid())
+  matchdayId String
+  teamId     String
+  points     Int
+  matchday   Matchday @relation(fields: [matchdayId], references: [id], onDelete: Cascade)
+  team       Team     @relation(fields: [teamId], references: [id], onDelete: Cascade)
+
+  @@unique([matchdayId, teamId])
+}
+
+model Cut {
+  id        String     @id @default(cuid())
+  name      String     @unique
+  order     Int        @default(0)
+  closed    Boolean    @default(false)
+  matchdays Matchday[]
+  createdAt DateTime   @default(now())
+}
+
+model Estimate {
+  id         String   @id @default(cuid())
+  matchdayId String
+  teamId     String
+  points     Int
+  matchday   Matchday @relation(fields: [matchdayId], references: [id], onDelete: Cascade)
+  team       Team     @relation(fields: [teamId], references: [id], onDelete: Cascade)
+
+  @@unique([matchdayId, teamId])
+}
+
+model Post {
+  id          String       @id @default(cuid())
+  slug        String       @unique
+  title       String
+  excerpt     String
+  category    PostCategory
+  body        String
+  imageUrl    String?
+  published   Boolean      @default(false)
+  publishedAt DateTime?
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+}
