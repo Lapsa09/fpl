@@ -18,13 +18,10 @@ export async function assignMatchdayToCut(formData: FormData) {
   const matchdayId = String(formData.get("matchdayId") ?? "").trim();
   const cutId = String(formData.get("cutId") ?? "").trim();
   if (!matchdayId) return;
-  await prisma.matchday.updateMany({
+  await prisma.matchday.update({
     where: { id: matchdayId },
-    data: { cutId: null },
+    data: { cutId: cutId === "" ? null : cutId },
   });
-  if (cutId) {
-    await prisma.matchday.update({ where: { id: matchdayId }, data: { cutId } });
-  }
   revalidatePath("/admin/cortes");
 }
 
