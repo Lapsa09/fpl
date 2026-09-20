@@ -24,13 +24,13 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       description: post.excerpt,
       type: "article",
       url,
-      images: post.imageUrl ? [{ url: post.imageUrl }] : undefined,
+      images: post.imageUrl ? [{ url: post.imageUrl }] : [{ url: "/opengraph-image.png" }],
     },
     twitter: {
       card: "summary_large_image",
       title: post.title,
       description: post.excerpt,
-      images: post.imageUrl ? [post.imageUrl] : undefined,
+      images: post.imageUrl ? [post.imageUrl] : ["/opengraph-image.png"],
     },
   };
 }
