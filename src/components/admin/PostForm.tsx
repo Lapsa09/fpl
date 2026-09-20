@@ -2,19 +2,13 @@
 
 import { useState } from "react";
 import { UploadButton } from "@/lib/uploadthing";
+import { POST_CATEGORIES } from "@/components/NewsCard";
 import {
   AdminCard,
   AdminPrimaryButton,
   adminInputClassName,
   adminLabelClassName,
 } from "@/components/admin/ui";
-
-const categories = [
-  ["TRANSFERS", "Traspasos"],
-  ["DECLARATIONS", "Declaraciones"],
-  ["STATEMENTS", "Comunicados"],
-  ["GENERAL", "General"],
-] as const;
 
 type PostValues = {
   title?: string;
@@ -52,8 +46,8 @@ export function PostForm({
         </label>
         <label className={adminLabelClassName}>
           Categoría
-          <select name="category" defaultValue={values.category ?? "GENERAL"} className={adminInputClassName}>
-            {categories.map(([value, label]) => (
+          <select name="category" defaultValue={values.category ?? "STATEMENTS"} className={adminInputClassName}>
+            {POST_CATEGORIES.map(([value, label]) => (
               <option key={value} value={value}>{label}</option>
             ))}
           </select>

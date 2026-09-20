@@ -1,12 +1,19 @@
 import Link from "next/link";
 import { formatDate } from "@/lib/format";
 
-const CATEGORY_LABELS: Record<string, string> = {
-  TRANSFERS: "Fichajes",
-  DECLARATIONS: "Comunicados",
-  STATEMENTS: "Declaraciones",
+export const CATEGORY_LABELS: Record<string, string> = {
+  STATEMENTS: "Comunicados",
+  DECLARATIONS: "Declaraciones",
+  TRANSFERS: "Traspasos",
   GENERAL: "General",
 };
+
+export const POST_CATEGORIES = [
+  ["STATEMENTS", "Comunicados"],
+  ["DECLARATIONS", "Declaraciones"],
+  ["TRANSFERS", "Traspasos"],
+  ["GENERAL", "General"],
+] as const;
 
 export function categoryLabel(category: string): string {
   return CATEGORY_LABELS[category] ?? category;
