@@ -1,23 +1,38 @@
 import Link from "next/link";
+import { formatDate } from "@/lib/format";
+
+const CATEGORY_LABELS: Record<string, string> = {
+  TRANSFERS: "Fichajes",
+  DECLARATIONS: "Comunicados",
+  STATEMENTS: "Declaraciones",
+  GENERAL: "General",
+};
+
+export function categoryLabel(category: string): string {
+  return CATEGORY_LABELS[category] ?? category;
+}
 
 export function NewsCard({
-  slug, title, excerpt, imageUrl, category,
+  slug, title, excerpt, category, publishedAt, index,
 }: {
-  slug: string; title: string; excerpt: string; imageUrl: string | null; category: string;
+  slug: string; title: string; excerpt: string; category: string;
+  publishedAt: Date | null; index?: number;
 }) {
   return (
-    <article className="overflow-hidden rounded border">
-      <Link href={`/noticias/${slug}`}>
-        {imageUrl ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img src={imageUrl} alt="" className="h-48 w-full object-cover" />
-        ) : (
-          <div className="h-48 w-full bg-neutral-100" />
+    <article className="border-b border-line/70 last:border-0">
+      <Link href={`/noticias/${slug}`} className="group flex items-baseline gap-4 py-5">
+        {index !== undefined && (
+          <span className="hidden shrink-0 font-mono text-sm text-muted sm:block">
+            {String(index).padStart(2, "0")}
+          </span>
         )}
-        <div className="p-4">
-          <span className="text-xs font-semibold uppercase text-neutral-500">{category}</span>
-          <h2 className="mt-1 text-lg font-bold">{title}</h2>
-          <p className="mt-2 text-sm text-neutral-600">{excerpt}</p>
+        <div className="min-w-0 flex-1">
+          <div className="flex flex-wrap items-center gap-2 text-xs">
+            <span className="font-semibold uppercase tracking-[0.14em] text-accent">{categoryLabel(category)}</span>
+            {publishedAt && <span className="text-muted">{formatDate(publishedAt)}</span>}
+          </div>
+          <h2 className="mt-1 text-lg font-semibold leading-snug group-hover:text-accent">{title}</h2>
+          <p className="mt-1 hidden text-sm text-muted sm:block">{excerpt}</p>
         </div>
       </Link>
     </article>

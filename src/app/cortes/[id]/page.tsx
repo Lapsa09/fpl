@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { getCutResult } from "@/lib/data";
+import { getCutResult, getPrizeRules } from "@/lib/data";
 import { StandingsTable } from "@/components/StandingsTable";
 
 export const dynamic = "force-dynamic";
@@ -8,18 +8,30 @@ export default async function CutDetailPage({ params }: { params: Promise<{ id: 
   const { id } = await params;
   const result = await getCutResult(id);
   if (!result.cut) notFound();
+  const prizes = await getPrizeRules();
   return (
-    <div className="space-y-6">
-      <h1 className="text-3xl font-black">{result.cut.name}</h1>
-      {result.winner ? (
-        <p className="rounded border bg-neutral-50 p-4">
-          {result.cut.closed ? "Ganador" : "Va liderando"}: <strong>{result.winner.teamName}</strong> ({result.winner.total} pts)
-          {result.tied ? " — definido por la tabla general" : ""}
+    <div className="space-y-8">
+      <header>
+        <p className="text-[11px] font-medium uppercase tracking-[0.28em] text-muted">
+          Corte {result.cut.order} {result.cut.closed ? "(cerrado)" : "(en juego)"}
         </p>
+        <h1 className="mt-2 text-3xl font-black uppercase tracking-tight md:text-4xl">{result.cut.name}</h1>
+      </header>
+      {result.winner ? (
+        <div className="rounded-2xl border border-line bg-panel p-6">
+          <p className="text-[11px] font-medium uppercase tracking-[0.28em] text-muted">
+            {result.cut.closed ? "Ganador" : "En cabeza"}
+          </p>
+          <p className="mt-2 text-2xl font-black tracking-tight">
+            {result.winner.teamName}
+            <span className="ml-3 font-mono text-accent">{result.winner.total} pts</span>
+          </p>
+          {result.tied && <p className="mt-1 text-sm text-muted">Empate en puntos, definido por la tabla general.</p>}
+        </div>
       ) : (
-        <p className="text-neutral-500">Sin puntos cargados para este corte.</p>
+        <p className="text-muted">Sin puntos cargados para este corte.</p>
       )}
-      <StandingsTable rows={result.rows} />
+      {result.rows.length > 0 && <StandingsTable rows={result.rows} prizes={prizes} />}
     </div>
   );
 }

@@ -11,15 +11,25 @@ export default async function NewsListPage() {
     orderBy: { publishedAt: "desc" },
   });
   return (
-    <div className="space-y-6">
-      <h1 className="text-3xl font-black">Noticias</h1>
+    <div className="space-y-8">
+      <header>
+        <p className="text-[11px] font-medium uppercase tracking-[0.28em] text-muted">Comunicados</p>
+        <h1 className="mt-2 text-3xl font-black uppercase tracking-tight md:text-4xl">Noticias</h1>
+      </header>
       {posts.length === 0 ? (
-        <p className="text-neutral-500">Todavía no hay noticias publicadas.</p>
+        <p className="text-muted">Todavía no hay noticias publicadas.</p>
       ) : (
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {posts.map((post) => (
-            <NewsCard key={post.id} slug={post.slug} title={post.title}
-              excerpt={post.excerpt} imageUrl={post.imageUrl} category={post.category} />
+        <div>
+          {posts.map((post, i) => (
+            <NewsCard
+              key={post.id}
+              slug={post.slug}
+              title={post.title}
+              excerpt={post.excerpt}
+              category={post.category}
+              publishedAt={post.publishedAt}
+              index={i + 1}
+            />
           ))}
         </div>
       )}

@@ -26,7 +26,7 @@ export default async function EditPostPage({ params }: { params: Promise<{ id: s
       </PostForm>
       <form action={deletePost}>
         <input type="hidden" name="id" value={post.id} />
-        <button className="text-sm text-red-600">Eliminar noticia</button>
+        <button className="text-sm text-danger">Eliminar noticia</button>
       </form>
     </div>
   );

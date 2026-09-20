@@ -3,6 +3,8 @@ import { prisma } from "@/lib/db";
 import { computeStandings } from "@/lib/domain/standings";
 import { resolveCutWinner, standingsForCut } from "@/lib/domain/cuts";
 import type { MatchdayInCut } from "@/lib/domain/cuts";
+import { DEFAULT_PRIZES, isPrizeTone } from "@/lib/domain/prizes";
+import type { PrizeRule } from "@/lib/domain/prizes";
 import { projectStandings } from "@/lib/domain/simulator";
 import type { EstimateData } from "@/lib/domain/simulator";
 import type { MatchdayData, StandingRow, TeamRef } from "@/lib/domain/types";
@@ -58,6 +60,21 @@ export const getEstimates = cache(async (): Promise<EstimateData[]> => {
 export const getGeneralStandings = cache(async (): Promise<StandingRow[]> =>
   computeStandings(await getTeams(), await getMatchdays()),
 );
+
+export const getPrizeRules = cache(async (): Promise<PrizeRule[]> => {
+  try {
+    const rows = await prisma.prizeRule.findMany({ orderBy: { fromRank: "asc" } });
+    if (rows.length === 0) return DEFAULT_PRIZES;
+    return rows.map((r) => ({
+      fromRank: r.fromRank,
+      toRank: r.toRank,
+      text: r.text,
+      tone: isPrizeTone(r.tone) ? r.tone : "steel",
+    }));
+  } catch {
+    return DEFAULT_PRIZES;
+  }
+});
 
 export const getProjectedStandings = cache(async (): Promise<StandingRow[]> =>
   projectStandings(await getTeams(), await getMatchdays(), await getEstimates()),

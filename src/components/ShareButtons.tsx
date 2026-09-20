@@ -16,7 +16,7 @@ export function ShareButtons({ url, title }: { url: string; title: string }) {
     <div className="flex flex-wrap gap-2">
       {targets.map(([label, href]) => (
         <a key={label} href={href} target="_blank" rel="noreferrer"
-          className="rounded border px-3 py-1 text-sm hover:bg-neutral-100">
+          className="rounded-full border border-line px-4 py-1.5 text-sm font-semibold text-muted transition-colors hover:border-accent hover:text-foreground">
           {label}
         </a>
       ))}
@@ -29,7 +29,7 @@ export function ShareButtons({ url, title }: { url: string; title: string }) {
             setCopied(false);
           }
         }}
-        className="rounded border px-3 py-1 text-sm hover:bg-neutral-100"
+        className="rounded-full border border-line px-4 py-1.5 text-sm font-semibold text-muted transition-colors hover:border-accent hover:text-foreground"
       >
         {copied ? "¡Copiado!" : "Copiar link"}
       </button>

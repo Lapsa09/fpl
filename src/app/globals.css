@@ -1,24 +1,74 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #170431;
+  --panel: #220844;
+  --panel-2: #2c0a56;
+  --foreground: #ffffff;
+  --muted: #c9b6ea;
+  --border: #5e2fa3;
+  --accent: #2dd4ff;
+  --accent-ink: #14042b;
+  --gold: #ffc21a;
+  --prize-green: #00e676;
+  --prize-red: #f62459;
+  --steel: #9aa1b2;
 }
 
 @theme inline {
+  --font-sans: var(--font-archivo);
+  --font-mono: var(--font-plex);
   --color-background: var(--background);
+  --color-panel: var(--panel);
   --color-foreground: var(--foreground);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-muted: var(--muted);
+  --color-line: var(--border);
+  --color-accent: var(--accent);
+  --color-accent-ink: var(--accent-ink);
+  --color-gold: var(--gold);
+  --color-prize: var(--prize-green);
+  --color-danger: var(--prize-red);
+  --color-steel: var(--steel);
 }
 
 body {
-  background: var(--background);
+  background:
+    radial-gradient(1100px 480px at 85% -120px, rgba(45, 212, 255, 0.16), transparent 60%),
+    radial-gradient(900px 520px at -10% -80px, rgba(217, 28, 220, 0.28), transparent 55%),
+    linear-gradient(180deg, #230848 0%, #170431 420px, #170431 100%);
+  background-color: var(--background);
+  background-attachment: fixed;
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(115deg, transparent 0 46px, rgba(45, 212, 255, 0.55) 46px 62px, transparent 62px 120px),
+    linear-gradient(115deg, transparent 0 78px, rgba(217, 28, 220, 0.5) 78px 96px, transparent 96px 170px);
+  background-position: left top, left top;
+  background-repeat: no-repeat;
+  opacity: 0.16;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
 }

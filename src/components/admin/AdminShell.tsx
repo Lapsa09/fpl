@@ -3,15 +3,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { SESSION_COOKIE, verifySession } from "@/lib/auth";
 import { logout } from "@/app/login/actions";
-
-const links = [
-  ["/admin", "Resumen"],
-  ["/admin/equipos", "Equipos"],
-  ["/admin/jornadas", "Jornadas"],
-  ["/admin/cortes", "Cortes"],
-  ["/admin/noticias", "Noticias"],
-  ["/admin/simulador", "Simulador"],
-] as const;
+import { AdminNav } from "@/components/admin/AdminNav";
 
 export async function requireAdmin() {
   const token = (await cookies()).get(SESSION_COOKIE)?.value;
@@ -21,17 +13,14 @@ export async function requireAdmin() {
 export default async function AdminShell({ children }: { children: React.ReactNode }) {
   await requireAdmin();
   return (
-    <div className="mx-auto flex max-w-5xl gap-8 px-6 py-10">
-      <aside className="w-48 shrink-0">
-        <nav className="space-y-2 text-sm">
-          {links.map(([href, label]) => (
-            <Link key={href} href={href} className="block rounded px-2 py-1 hover:bg-neutral-100">
-              {label}
-            </Link>
-          ))}
-        </nav>
-        <form action={logout} className="mt-8">
-          <button className="text-sm text-red-600">Cerrar sesión</button>
+    <div className="mx-auto flex max-w-5xl flex-col gap-6 px-6 py-10 md:flex-row md:gap-8">
+      <aside className="shrink-0 rounded-2xl border border-line bg-panel p-3 md:w-48 md:self-start lg:sticky lg:top-24">
+        <Link href="/admin" className="mb-2 block px-3 py-1 text-base font-black uppercase tracking-tight">
+          Premier <span className="text-accent">Arg</span>
+        </Link>
+        <AdminNav />
+        <form action={logout} className="mt-4 border-t border-white/10 px-3 pt-3">
+          <button className="text-sm text-danger">Cerrar sesión</button>
         </form>
       </aside>
       <section className="min-w-0 flex-1">{children}</section>

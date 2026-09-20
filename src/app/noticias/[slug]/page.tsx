@@ -1,7 +1,10 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/db";
 import { ShareButtons } from "@/components/ShareButtons";
+import { categoryLabel } from "@/components/NewsCard";
+import { formatDate } from "@/lib/format";
 
 export const dynamic = "force-dynamic";
 
@@ -38,16 +41,29 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
   if (!post || !post.published) notFound();
   const url = `${baseUrl}/noticias/${post.slug}`;
   return (
-    <article className="mx-auto max-w-2xl space-y-6">
-      <span className="text-xs font-semibold uppercase text-neutral-500">{post.category}</span>
-      <h1 className="text-3xl font-black">{post.title}</h1>
-      <p className="text-lg text-neutral-600">{post.excerpt}</p>
+    <article className="mx-auto max-w-3xl">
+      <Link href="/noticias" className="text-sm font-semibold text-muted underline-offset-4 hover:text-foreground hover:underline">
+        Volver a noticias
+      </Link>
+      <header className="mt-6">
+        <p className="text-[11px] font-medium uppercase tracking-[0.28em] text-accent">{categoryLabel(post.category)}</p>
+        <h1 className="mt-3 text-3xl font-black leading-tight tracking-tight md:text-5xl">{post.title}</h1>
+        <p className="mt-4 text-lg leading-relaxed text-muted">{post.excerpt}</p>
+        {post.publishedAt && (
+          <p className="mt-4 text-xs font-medium uppercase tracking-[0.28em] text-muted">{formatDate(post.publishedAt)}</p>
+        )}
+      </header>
       {post.imageUrl ? (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img src={post.imageUrl} alt="" className="w-full rounded object-cover" />
+        <div className="mt-8 overflow-hidden rounded-2xl border border-line">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={post.imageUrl} alt="" className="w-full object-cover" />
+        </div>
       ) : null}
-      <div className="whitespace-pre-wrap leading-relaxed">{post.body}</div>
-      <ShareButtons url={url} title={post.title} />
+      <div className="mt-8 whitespace-pre-wrap text-base leading-relaxed md:text-lg">{post.body}</div>
+      <div className="mt-10 flex flex-wrap items-center gap-4">
+        <span className="text-sm font-semibold text-muted">Compartir</span>
+        <ShareButtons url={url} title={post.title} />
+      </div>
     </article>
   );
 }

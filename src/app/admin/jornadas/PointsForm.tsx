@@ -2,6 +2,7 @@
 
 import { useState, useTransition } from "react";
 import { savePoints } from "./actions";
+import { AdminPrimaryButton, adminInputClassName } from "@/components/admin/ui";
 
 export function PointsForm({
   matchdayId,
@@ -19,7 +20,7 @@ export function PointsForm({
 
   return (
     <form
-      className="space-y-2"
+      className="space-y-3"
       onSubmit={(event) => {
         event.preventDefault();
         const entries = Object.entries(values)
@@ -30,23 +31,27 @@ export function PointsForm({
         });
       }}
     >
-      <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
+      <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 xl:grid-cols-3">
         {teams.map((team) => (
-          <label key={team.id} className="flex items-center justify-between gap-2 text-sm">
-            {team.name}
+          <label
+            key={team.id}
+            className="flex items-center justify-between gap-2 rounded-xl border border-line/70 bg-background px-3 py-2 text-sm"
+          >
+            <span className="truncate">{team.name}</span>
             <input
               type="number"
               min={0}
+              aria-label={`Puntos de ${team.name}`}
               value={values[team.id]}
               onChange={(e) => setValues((v) => ({ ...v, [team.id]: e.target.value }))}
-              className="w-20 rounded border px-2 py-1"
+              className={`w-20 ${adminInputClassName}`}
             />
           </label>
         ))}
       </div>
-      <button disabled={pending} className="rounded bg-black px-3 py-2 text-sm text-white disabled:opacity-50">
+      <AdminPrimaryButton disabled={pending}>
         {pending ? "Guardando…" : "Guardar puntos"}
-      </button>
+      </AdminPrimaryButton>
     </form>
   );
 }
