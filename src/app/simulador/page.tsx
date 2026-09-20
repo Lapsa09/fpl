@@ -20,7 +20,7 @@ export default async function SimulatorPage() {
           <p className="text-[11px] font-medium uppercase tracking-[0.28em] text-muted">Proyección</p>
           <h1 className="mt-2 text-3xl font-black uppercase tracking-tight md:text-4xl">Simulador</h1>
           <p className="mt-3 max-w-[60ch] leading-relaxed text-muted">
-            Combina los puntos reales ya jugados con las estimaciones cargadas por el admin para las próximas jornadas.
+            Combina los puntos reales cargados con las estimaciones del admin para las jornadas sin puntos.
           </p>
         </header>
         <div>

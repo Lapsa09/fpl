@@ -19,7 +19,7 @@ export default async function MatchdaysPage() {
     <div className="space-y-8">
       <div>
         <h1 className="text-2xl font-bold">Jornadas</h1>
-        <p className="mt-1 text-sm text-muted">Solo las jornadas jugadas suman en la tabla.</p>
+        <p className="mt-1 text-sm text-muted">Los puntos suman en la tabla apenas se cargan, sin esperar a que la jornada termine.</p>
       </div>
 
       <AdminCard>

@@ -8,11 +8,11 @@ export function projectStandings(
   realMatchdays: MatchdayData[],
   estimates: EstimateData[],
 ): StandingRow[] {
-  const playedIds = new Set(
-    realMatchdays.filter((m) => m.played).map((m) => m.id),
+  const withRealPoints = new Set(
+    realMatchdays.filter((m) => m.points.length > 0).map((m) => m.id),
   );
   const estimateMatchdays: MatchdayData[] = estimates
-    .filter((e) => !playedIds.has(e.matchdayId))
+    .filter((e) => !withRealPoints.has(e.matchdayId))
     .map((e) => ({ id: `estimate:${e.matchdayId}`, played: true, points: e.points }));
   return computeStandings(teams, [...realMatchdays, ...estimateMatchdays]);
 }

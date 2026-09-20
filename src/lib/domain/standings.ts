@@ -8,7 +8,6 @@ export function computeStandings(
   for (const team of teams) totals.set(team.id, { total: 0, played: 0 });
 
   for (const matchday of matchdays) {
-    if (!matchday.played) continue;
     for (const row of matchday.points) {
       const entry = totals.get(row.teamId);
       if (!entry) continue;

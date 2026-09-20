@@ -24,7 +24,7 @@ Next.js 15 + React 19 + Tailwind 4 + Prisma 7 (PostgreSQL) + UploadThing. Single
 
 ## Architecture
 
-- `src/lib/domain/` — pure, tested business logic: `standings.ts` (only `played` matchdays count; sort total desc, name asc), `cuts.ts` (cut tiebreak = general-standings rank via `resolveCutWinner`), `simulator.ts` (estimates for already-played matchdays are ignored), `types.ts`. Put new rules here with a `.test.ts`, not in pages/actions.
+- `src/lib/domain/` — pure, tested business logic: `standings.ts` (any matchday with loaded points counts, regardless of `played`; sort total desc, name asc), `cuts.ts` (cut tiebreak = general-standings rank via `resolveCutWinner`), `simulator.ts` (estimates for matchdays that already have real points are ignored), `types.ts`. Put new rules here with a `.test.ts`, not in pages/actions.
 - `src/lib/data.ts` — cached (`cache()` from React) read layer composing domain functions; pages call these.
 - `src/app/admin/` — server-action CRUD per section (`equipos`, `jornadas`, `cortes`, `noticias`, `simulador`) + `revalidatePath` after writes; pages outside `src/app/admin/` and `src/app/login/` are read-only.
 - `NEXT_PUBLIC_SITE_URL` feeds absolute OG/Twitter preview URLs; news images go through UploadThing (`newsImage` router, 8MB, images only).

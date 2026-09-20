@@ -37,4 +37,13 @@ describe("projectStandings", () => {
     const rows = projectStandings(teams, real, estimates);
     expect(rows.find((r) => r.teamId === "a")!.total).toBe(10);
   });
+
+  it("ignora estimaciones si ya hay puntos reales aunque la jornada siga pendiente", () => {
+    const real: MatchdayData[] = [
+      { id: "1", played: false, points: [{ teamId: "a", points: 10 }] },
+    ];
+    const estimates = [{ matchdayId: "1", points: [{ teamId: "a", points: 999 }] }];
+    const rows = projectStandings(teams, real, estimates);
+    expect(rows.find((r) => r.teamId === "a")!.total).toBe(10);
+  });
 });

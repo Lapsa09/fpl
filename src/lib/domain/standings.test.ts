@@ -49,12 +49,23 @@ describe("computeStandings", () => {
     expect(rows.map((r) => r.rank)).toEqual([1, 2, 3]);
   });
 
-  it("ignora jornadas no jugadas", () => {
+  it("suma jornadas con puntos aunque no estén marcadas como jugadas", () => {
     const matchdays: MatchdayData[] = [
       { id: "1", played: true, points: [{ teamId: "a", points: 10 }] },
       { id: "2", played: false, points: [{ teamId: "a", points: 99 }] },
     ];
     const rows = computeStandings(teams, matchdays);
-    expect(rows.find((r) => r.teamId === "a")!.total).toBe(10);
+    const a = rows.find((r) => r.teamId === "a")!;
+    expect(a.total).toBe(109);
+    expect(a.played).toBe(2);
+  });
+
+  it("ignora jornadas sin puntos cargados", () => {
+    const matchdays: MatchdayData[] = [
+      { id: "1", played: true, points: [] },
+      { id: "2", played: false, points: [] },
+    ];
+    const rows = computeStandings(teams, matchdays);
+    expect(rows.every((r) => r.total === 0 && r.played === 0)).toBe(true);
   });
 });
