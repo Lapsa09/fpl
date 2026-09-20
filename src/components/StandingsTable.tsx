@@ -22,7 +22,15 @@ function effectivePrizes(prizes?: PrizeRule[]): PrizeRule[] {
   return prizes && prizes.length > 0 ? prizes : DEFAULT_PRIZES;
 }
 
-export function StandingsTable({ rows, title, prizes }: { rows: StandingRow[]; title?: string; prizes?: PrizeRule[] }) {
+export function StandingsTable({
+  rows,
+  title,
+  prizes,
+}: {
+  rows: StandingRow[];
+  title?: string;
+  prizes?: PrizeRule[];
+}) {
   const rules = effectivePrizes(prizes);
   return (
     <div className="overflow-hidden rounded-2xl border border-line bg-panel shadow-[0_24px_60px_-24px_rgba(0,0,0,0.7)]">
@@ -42,10 +50,16 @@ export function StandingsTable({ rows, title, prizes }: { rows: StandingRow[]; t
               <th scope="col" className="py-3 pr-2 font-medium">
                 Equipos
               </th>
-              <th scope="col" className="border-l border-line/70 py-3 pl-2 pr-4 text-center font-medium">
+              <th
+                scope="col"
+                className="border-l border-line/70 py-3 pl-2 pr-4 text-center font-medium"
+              >
                 GW
               </th>
-              <th scope="col" className="border-l border-line/70 py-3 pl-2 pr-5 text-center font-medium">
+              <th
+                scope="col"
+                className="border-l border-line/70 py-3 pl-2 pr-5 text-center font-medium"
+              >
                 TOT
               </th>
             </tr>
@@ -54,17 +68,20 @@ export function StandingsTable({ rows, title, prizes }: { rows: StandingRow[]; t
             {rows.map((row, i) => (
               <tr
                 key={row.teamId}
-                className={i % 2 === 1 ? "bg-white/[0.03]" : undefined}
+                className={i % 2 === 1 ? "bg-white/3" : undefined}
               >
-                <td className={`px-2 py-1.5 text-center text-2xl font-black tabular-nums ${CELL_TONES[toneForRank(rules, row.rank)]}`}>
+                <td
+                  className={`px-2 py-1.5 text-center text-2xl font-black tabular-nums ${CELL_TONES[toneForRank(rules, row.rank)]}`}
+                >
                   {row.rank}
                 </td>
                 <td className="border-t border-white/10 py-3 pl-4 pr-2">
                   <span className="font-bold leading-tight">
                     {row.teamName}
-                    {row.rank === 1 && <span aria-hidden="true" className="ml-1.5 text-gold">★</span>}
                   </span>
-                  <span className="block text-sm leading-tight text-muted">{row.manager}</span>
+                  <span className="block text-sm leading-tight text-muted">
+                    {row.manager}
+                  </span>
                 </td>
                 <td className="border-l border-t border-white/10 py-3 pl-2 pr-4 text-center font-mono text-lg tabular-nums">
                   {row.played}
@@ -87,10 +104,18 @@ export function PrizeLegend({ prizes }: { prizes?: PrizeRule[] }) {
     <div className="rounded-2xl border border-line bg-panel px-5 py-2">
       <ul className="divide-y divide-white/10">
         {rules.map((prize) => (
-          <li key={`${prize.fromRank}-${prize.toRank}-${prize.text}`} className="flex items-center gap-4 py-2.5">
-            <span aria-hidden="true" className={`h-6 w-6 shrink-0 rounded-full ${DOT_TONES[prize.tone]}`} />
+          <li
+            key={`${prize.fromRank}-${prize.toRank}-${prize.text}`}
+            className="flex items-center gap-4 py-2.5"
+          >
+            <span
+              aria-hidden="true"
+              className={`h-6 w-6 shrink-0 rounded-full ${DOT_TONES[prize.tone]}`}
+            />
             <p className="text-[15px]">
-              <strong className="font-bold">{rangeLabel(prize.fromRank, prize.toRank)}:</strong>{" "}
+              <strong className="font-bold">
+                {rangeLabel(prize.fromRank, prize.toRank)}:
+              </strong>{" "}
               <span className="text-white/90">{prize.text}</span>
             </p>
           </li>
