@@ -12,7 +12,7 @@ export function SiteFooter() {
         </p>
         <div className="flex flex-wrap items-baseline justify-between gap-4">
           <p>Noticias, tabla de posiciones, cortes y simulador.</p>
-          <Link href="/login" className="text-muted underline-offset-4 hover:text-foreground hover:underline">
+          <Link href="/admin" className="text-muted underline-offset-4 hover:text-foreground hover:underline">
             Acceso admin
           </Link>
         </div>
