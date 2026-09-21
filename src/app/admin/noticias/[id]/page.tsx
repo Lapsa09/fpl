@@ -19,7 +19,6 @@ export default async function EditPostPage({ params }: { params: Promise<{ id: s
           category: post.category,
           body: post.body,
           imageUrl: post.imageUrl,
-          published: post.published,
         }}
       >
         <input type="hidden" name="id" value={post.id} />

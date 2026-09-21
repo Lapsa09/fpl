@@ -16,7 +16,6 @@ type PostValues = {
   category?: string;
   body?: string;
   imageUrl?: string | null;
-  published?: boolean;
 };
 
 export function PostForm({
@@ -71,9 +70,6 @@ export function PostForm({
             onClientUploadComplete={(res) => setImageUrl(res?.[0]?.ufsUrl ?? "")}
           />
         </div>
-        <label className="flex items-center gap-2 text-sm text-muted">
-          <input type="checkbox" name="published" defaultChecked={values.published} className="h-4 w-4 accent-accent" /> Publicada
-        </label>
         <AdminPrimaryButton>{submitLabel}</AdminPrimaryButton>
       </form>
     </AdminCard>

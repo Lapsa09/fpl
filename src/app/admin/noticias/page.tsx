@@ -25,7 +25,7 @@ export default async function PostsPage() {
               <div className="min-w-0">
                 <p className="truncate font-medium">{post.title}</p>
                 <p className="mt-0.5 text-xs text-muted">
-                  {categoryLabel(post.category)} · {post.published ? "Publicada" : "Borrador"}
+                  {categoryLabel(post.category)}
                 </p>
               </div>
               <Link href={`/admin/noticias/${post.id}`} className="shrink-0 text-sm font-semibold text-accent hover:underline">

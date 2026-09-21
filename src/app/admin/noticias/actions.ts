@@ -47,7 +47,6 @@ function readPost(formData: FormData) {
       | "TRANSFERS" | "DECLARATIONS" | "STATEMENTS" | "GENERAL",
     body: String(formData.get("body") ?? "").trim(),
     imageUrl: String(formData.get("imageUrl") ?? "").trim() || null,
-    published: formData.get("published") === "on",
   };
 }
 
@@ -57,11 +56,12 @@ export async function createPost(formData: FormData) {
   if (!data.title || !data.excerpt || !data.body) return;
   const post = await saveWithUniqueSlug(slugify(data.title), undefined, (slug) =>
     prisma.post.create({
-      data: { ...data, slug, publishedAt: data.published ? new Date() : null },
+      data: { ...data, slug, published: true, publishedAt: new Date() },
     }),
   );
   revalidatePath("/admin/noticias");
-  redirect(`/admin/noticias/${post.id}`);
+  revalidatePath("/noticias");
+  redirect(`/noticias/${post.slug}`);
 }
 
 export async function updatePost(formData: FormData) {
@@ -77,12 +77,15 @@ export async function updatePost(formData: FormData) {
       data: {
         ...data,
         slug,
-        publishedAt: data.published ? current.publishedAt ?? new Date() : null,
+        published: true,
+        publishedAt: current.publishedAt ?? new Date(),
       },
     }),
   );
   revalidatePath("/admin/noticias");
+  revalidatePath("/noticias");
   revalidatePath(`/noticias/${slug}`);
+  redirect(`/noticias/${slug}`);
 }
 
 export async function deletePost(formData: FormData) {
