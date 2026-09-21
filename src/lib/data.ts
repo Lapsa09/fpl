@@ -7,6 +7,8 @@ import { DEFAULT_PRIZES, isPrizeTone } from "@/lib/domain/prizes";
 import type { PrizeRule } from "@/lib/domain/prizes";
 import { projectStandings } from "@/lib/domain/simulator";
 import type { EstimateData } from "@/lib/domain/simulator";
+import { cutPotBreakdown } from "@/lib/domain/pozos";
+import type { CutPot } from "@/lib/domain/pozos";
 import type { MatchdayData, StandingRow, TeamRef } from "@/lib/domain/types";
 
 export const getTeams = cache(async (): Promise<TeamRef[]> => {
@@ -107,3 +109,9 @@ export async function getProjectedCutResult(cutId: string) {
   const { winner, tied } = resolveCutWinner(rows, await getGeneralStandings());
   return { rows, winner, tied };
 }
+
+export const getCutPot = cache(async (): Promise<CutPot> => {
+  const settings = await prisma.leagueSettings.findUnique({ where: { id: 1 } });
+  const participants = await prisma.team.count({ where: { active: true } });
+  return cutPotBreakdown(settings?.cutPotAmount ?? 180000, participants);
+});
