@@ -17,4 +17,10 @@ describe("cutPotBreakdown", () => {
   it("trunca decimales", () => {
     expect(cutPotBreakdown(180000.9, 10.9)).toEqual({ potAmount: 180000, contributors: 9, quota: 20000 });
   });
+  it("2 participantes -> 1 aportante con cuota del pozo completo", () => {
+    expect(cutPotBreakdown(180000, 2)).toEqual({ potAmount: 180000, contributors: 1, quota: 180000 });
+  });
+  it("pot 100000 y 9 aportantes no divisibles trunca la cuota", () => {
+    expect(cutPotBreakdown(100000, 10)).toEqual({ potAmount: 100000, contributors: 9, quota: 11111 });
+  });
 });

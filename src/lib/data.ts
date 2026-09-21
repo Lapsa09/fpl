@@ -111,7 +111,9 @@ export async function getProjectedCutResult(cutId: string) {
 }
 
 export const getCutPot = cache(async (): Promise<CutPot> => {
-  const settings = await prisma.leagueSettings.findUnique({ where: { id: 1 } });
-  const participants = await prisma.team.count({ where: { active: true } });
+  const [settings, participants] = await Promise.all([
+    prisma.leagueSettings.findUnique({ where: { id: 1 } }),
+    prisma.team.count({ where: { active: true } }),
+  ]);
   return cutPotBreakdown(settings?.cutPotAmount ?? 180000, participants);
 });

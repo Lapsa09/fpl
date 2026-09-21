@@ -36,7 +36,8 @@ export async function toggleCutClosed(formData: FormData) {
 
 export async function saveCutPot(formData: FormData) {
   await requireAdmin();
-  const amount = Math.max(0, Math.trunc(Number(formData.get("cutPotAmount") ?? 0)));
+  const raw = Number(formData.get("cutPotAmount"));
+  const amount = Number.isFinite(raw) && raw >= 0 ? Math.min(Math.trunc(raw), 2_147_483_647) : 0;
   await prisma.leagueSettings.upsert({
     where: { id: 1 },
     update: { cutPotAmount: amount },
