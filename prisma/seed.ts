@@ -18,6 +18,11 @@ async function main() {
   for (const team of teams) {
     await prisma.team.upsert({ where: { name: team.name }, update: {}, create: team });
   }
+  await prisma.leagueSettings.upsert({
+    where: { id: 1 },
+    update: {},
+    create: { id: 1, cutPotAmount: 180000 },
+  });
   const cut = await prisma.cut.upsert({
     where: { name: "Corte 1" },
     update: {},

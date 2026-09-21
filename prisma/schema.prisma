@@ -87,3 +87,8 @@ model PrizeRule {
   tone      String   @default("steel")
   createdAt DateTime @default(now())
 }
+
+model LeagueSettings {
+  id           Int @id @default(1)
+  cutPotAmount Int @default(180000)
+}
