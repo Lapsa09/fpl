@@ -4,17 +4,17 @@ Next.js 15 + React 19 + Tailwind 4 + Prisma 7 (PostgreSQL) + UploadThing. Single
 
 ## Commands (npm is canonical; README uses `npm`/`npx`)
 
-- `npm install` → copy `.env.example` to `.env` → `npx prisma db push` → `npx prisma db seed` (demo data, optional) → `npm run dev`
+- `npm install` → copy `.env.example` to `.env` → `npx prisma db push` → `npm run dev`. No hay seed: los datos se cargan manualmente desde el admin.
 - `npm test` = `vitest run`. Single file: `npx vitest run src/lib/domain/standings.test.ts`. Watch: `npm run test:watch`
 - `npm run lint` (`next lint`), `npm run build`, `npm start`
-- DB: `npm run db:generate` (`prisma generate`), `npm run db:push`, `npm run db:seed` (`tsx prisma/seed.ts`)
+- DB: `npm run db:generate` (`prisma generate`), `npm run db:push`
 - Tests only match `src/**/*.test.ts`, node env, `@/` alias via `vite-tsconfig-paths` (`vitest.config.ts`)
 
 ## Prisma / DB gotchas
 
 - No migrations directory — schema changes ship via `prisma db push`, never `prisma migrate`. Vercel build is `prisma generate && next build` (`vercel.json`).
-- Prisma 7 needs the `PrismaPg` adapter: always construct via `new PrismaClient({ adapter: new PrismaPg({ connectionString: process.env.DATABASE_URL }) })` — see `src/lib/db.ts` (singleton via `globalThis`, required for serverless) and `prisma/seed.ts`. A bare `new PrismaClient()` will not work.
-- `DATABASE_URL` pooling: use the **pooled** Neon URL (`-pooler`, `?sslmode=require`) in Vercel/prod, the **direct** URL locally for `db push` / `db seed`.
+- Prisma 7 needs the `PrismaPg` adapter: always construct via `new PrismaClient({ adapter: new PrismaPg({ connectionString: process.env.DATABASE_URL }) })` — see `src/lib/db.ts` (singleton via `globalThis`, required for serverless). A bare `new PrismaClient()` will not work.
+- `DATABASE_URL` pooling: use the **pooled** Neon URL (`-pooler`, `?sslmode=require`) in Vercel/prod, the **direct** URL locally for `db push`.
 
 ## Auth (single admin, no providers)
 

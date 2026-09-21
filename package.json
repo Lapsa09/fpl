@@ -1,6 +1,6 @@
 {
   "name": "fpl",
-  "version": "1.0.0",
+  "version": "1.5.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -9,7 +9,6 @@
     "lint": "next lint",
     "db:generate": "prisma generate",
     "db:push": "prisma db push",
-    "db:seed": "prisma db seed",
     "test": "vitest run",
     "test:watch": "vitest",
     "standings": "tsx scripts/standings.ts"

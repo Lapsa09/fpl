@@ -8,7 +8,6 @@ const links = [
   ["/noticias", "Noticias"],
   ["/tabla", "Tabla"],
   ["/cortes", "Cortes"],
-  ["/simulador", "Simulador"],
 ] as const;
 
 export function NavLinks() {

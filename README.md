@@ -14,7 +14,7 @@ Además de Vercel (deploy), el proyecto necesita dos servicios gestionados:
 
 Alternativas de base de datos: Neon (recomendado), Supabase, Railway, Vercel Postgres (es Neon por debajo), Aiven o Render.
 
-> **Pooling:** en Vercel (serverless) usá la cadena de conexión *pooled* de Neon (incluye `-pooler`) para no agotar conexiones. Para `prisma db push` y `prisma db seed` en local, usá la cadena *directa* (sin `-pooler`); Neon entrega ambas.
+> **Pooling:** en Vercel (serverless) usá la cadena de conexión *pooled* de Neon (incluye `-pooler`) para no agotar conexiones. Para `prisma db push` en local, usá la cadena *directa* (sin `-pooler`); Neon entrega ambas.
 
 ## Variables de entorno
 
@@ -33,8 +33,7 @@ Copiar `.env.example` a `.env` y completar:
 1. `npm install`
 2. Copiar `.env.example` a `.env` y completar las variables.
 3. `npx prisma db push`
-4. `npx prisma db seed` (opcional: datos demo)
-5. `npm run dev`
+4. `npm run dev`
 
 ## Admin
 
