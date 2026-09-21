@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
-import { getCutResult, getPrizeRules } from "@/lib/data";
+import { getCutResult, getPrizeRules, getCutPot } from "@/lib/data";
+import { formatMoney } from "@/lib/format";
 import { StandingsTable } from "@/components/StandingsTable";
 
 export const dynamic = "force-dynamic";
@@ -9,6 +10,7 @@ export default async function CutDetailPage({ params }: { params: Promise<{ id: 
   const result = await getCutResult(id);
   if (!result.cut) notFound();
   const prizes = await getPrizeRules();
+  const pot = await getCutPot();
   return (
     <div className="space-y-8">
       <header>
@@ -27,6 +29,11 @@ export default async function CutDetailPage({ params }: { params: Promise<{ id: 
             <span className="ml-3 font-mono text-accent">{result.winner.total} pts</span>
           </p>
           {result.tied && <p className="mt-1 text-sm text-muted">Empate en puntos, definido por la tabla general.</p>}
+          {pot.potAmount > 0 && pot.contributors > 0 && (
+            <p className="mt-2 text-sm text-muted">
+              Premio: {formatMoney(pot.potAmount)} ({formatMoney(pot.quota)} por integrante).
+            </p>
+          )}
         </div>
       ) : (
         <p className="text-muted">Sin puntos cargados para este corte.</p>

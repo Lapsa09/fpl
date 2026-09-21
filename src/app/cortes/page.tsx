@@ -1,4 +1,5 @@
-import { getCuts, getCutResult } from "@/lib/data";
+import { getCuts, getCutResult, getCutPot } from "@/lib/data";
+import { formatMoney } from "@/lib/format";
 import { CutCard } from "@/components/CutCard";
 
 export const dynamic = "force-dynamic";
@@ -7,6 +8,7 @@ export const metadata = { title: "Cortes" };
 
 export default async function CutsPage() {
   const cuts = await getCuts();
+  const pot = await getCutPot();
   const results = await Promise.all(
     cuts.map(async (cut) => {
       const result = await getCutResult(cut.id);
@@ -26,6 +28,12 @@ export default async function CutsPage() {
         <p className="mt-3 max-w-[60ch] leading-relaxed text-muted">
           Cada corte es una fase de la temporada. El ganador se define por puntos y, en caso de empate, por la tabla general.
         </p>
+        {pot.potAmount > 0 && pot.contributors > 0 && (
+          <p className="mt-3 text-sm text-muted">
+            El ganador de cada corte se lleva {formatMoney(pot.potAmount)} — los otros {pot.contributors} aportan{" "}
+            {formatMoney(pot.quota)} cada uno.
+          </p>
+        )}
       </header>
       {results.length === 0 ? (
         <p className="text-muted">Todavía no hay cortes definidos.</p>
