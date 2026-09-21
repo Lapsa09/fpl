@@ -33,3 +33,15 @@ export async function toggleCutClosed(formData: FormData) {
   await prisma.cut.updateMany({ where: { id }, data: { closed } });
   revalidatePath("/admin/cortes");
 }
+
+export async function saveCutPot(formData: FormData) {
+  await requireAdmin();
+  const amount = Math.max(0, Math.trunc(Number(formData.get("cutPotAmount") ?? 0)));
+  await prisma.leagueSettings.upsert({
+    where: { id: 1 },
+    update: { cutPotAmount: amount },
+    create: { id: 1, cutPotAmount: amount },
+  });
+  revalidatePath("/admin/cortes");
+  revalidatePath("/cortes");
+}

@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/db";
-import { assignMatchdayToCut, createCut, toggleCutClosed } from "./actions";
+import { assignMatchdayToCut, createCut, saveCutPot, toggleCutClosed } from "./actions";
 import {
   AdminCard,
   AdminGhostButton,
@@ -9,9 +9,10 @@ import {
 } from "@/components/admin/ui";
 
 export default async function CutsPage() {
-  const [cuts, matchdays] = await Promise.all([
+  const [cuts, matchdays, settings] = await Promise.all([
     prisma.cut.findMany({ orderBy: { order: "asc" } }),
     prisma.matchday.findMany({ orderBy: { number: "asc" }, include: { cut: true } }),
+    prisma.leagueSettings.findUnique({ where: { id: 1 } }),
   ]);
   return (
     <div className="space-y-8">
@@ -69,6 +70,23 @@ export default async function CutsPage() {
             </li>
           ))}
         </ul>
+      </AdminCard>
+
+      <AdminCard>
+        <form action={saveCutPot} className="flex flex-wrap items-end gap-3">
+          <label className={adminLabelClassName}>
+            Pozo del ganador del corte (ARS)
+            <input
+              name="cutPotAmount"
+              type="number"
+              min={0}
+              required
+              defaultValue={settings?.cutPotAmount ?? 180000}
+              className={adminInputClassName}
+            />
+          </label>
+          <AdminGhostButton>Guardar</AdminGhostButton>
+        </form>
       </AdminCard>
     </div>
   );
