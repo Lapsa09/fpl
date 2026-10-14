@@ -1,10 +1,24 @@
 import { getGeneralStandings, getPrizeRules } from "@/lib/data";
 import { StandingsTable, PrizeLegend } from "@/components/StandingsTable";
 import { Podium } from "@/components/Podium";
+import { ShareImageButton } from "@/components/ShareImageButton";
 
 export const dynamic = "force-dynamic";
 
-export const metadata = { title: "Tabla de posiciones" };
+export const metadata = {
+  title: "Tabla de posiciones",
+  description: "Tabla general de la temporada, con premios por puesto.",
+  openGraph: {
+    title: "Tabla de posiciones",
+    description: "Tabla general de la temporada, con premios por puesto.",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Tabla de posiciones",
+    description: "Tabla general de la temporada, con premios por puesto.",
+  },
+};
 
 export default async function StandingsPage() {
   const rows = await getGeneralStandings();
@@ -22,6 +36,14 @@ export default async function StandingsPage() {
           <Podium rows={rows} />
           <StandingsTable rows={rows} title="Tabla anual - Fantasy Premier League" prizes={prizes} />
           <PrizeLegend prizes={prizes} />
+          <div className="flex flex-wrap items-center gap-4">
+            <span className="text-sm font-semibold text-muted">Compartir</span>
+            <ShareImageButton
+              imagePath="/tabla/opengraph-image"
+              fileName="premier-arg-tabla-general.png"
+              title="Tabla general — Premier Arg"
+            />
+          </div>
         </div>
       )}
     </div>
