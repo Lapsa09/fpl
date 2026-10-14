@@ -17,6 +17,7 @@
     "@prisma/adapter-pg": "^7.10.0",
     "@prisma/client": "^7.10.0",
     "@uploadthing/react": "^7.3.3",
+    "html-to-image": "^1.11.13",
     "next": "15.5.25",
     "pg": "^8.23.0",
     "react": "19.1.0",

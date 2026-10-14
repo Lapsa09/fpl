@@ -1,7 +1,7 @@
 import { getGeneralStandings, getPrizeRules } from "@/lib/data";
-import { StandingsTable, PrizeLegend } from "@/components/StandingsTable";
+import { PrizeLegend } from "@/components/StandingsTable";
 import { Podium } from "@/components/Podium";
-import { ShareImageButton } from "@/components/ShareImageButton";
+import { ShareableStandingsTable } from "@/components/ShareableStandingsTable";
 
 export const dynamic = "force-dynamic";
 
@@ -34,16 +34,14 @@ export default async function StandingsPage() {
       ) : (
         <div className="space-y-10">
           <Podium rows={rows} />
-          <StandingsTable rows={rows} title="Tabla anual - Fantasy Premier League" prizes={prizes} />
+          <ShareableStandingsTable
+            rows={rows}
+            title="Tabla anual - Fantasy Premier League"
+            prizes={prizes}
+            fileName="premier-arg-tabla-general.png"
+            shareTitle="Tabla general — Premier Arg"
+          />
           <PrizeLegend prizes={prizes} />
-          <div className="flex flex-wrap items-center gap-4">
-            <span className="text-sm font-semibold text-muted">Compartir</span>
-            <ShareImageButton
-              imagePath="/tabla/opengraph-image"
-              fileName="premier-arg-tabla-general.png"
-              title="Tabla general — Premier Arg"
-            />
-          </div>
         </div>
       )}
     </div>
