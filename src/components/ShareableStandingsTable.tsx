@@ -5,6 +5,17 @@ import { StandingsTable } from "@/components/StandingsTable";
 import type { StandingRow } from "@/lib/domain/types";
 import type { PrizeRule } from "@/lib/domain/prizes";
 
+function downloadBlob(blob: Blob, fileName: string) {
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = fileName;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 0);
+}
+
 export function ShareableStandingsTable({
   rows,
   prizes,
@@ -26,6 +37,7 @@ export function ShareableStandingsTable({
     if (!node) return;
     setState("loading");
     try {
+      if (document.fonts) await document.fonts.ready;
       const { toBlob } = await import("html-to-image");
       const blob = await toBlob(node, {
         pixelRatio: 2,
@@ -35,23 +47,20 @@ export function ShareableStandingsTable({
       if (!blob) throw new Error("capture failed");
       const file = new File([blob], fileName, { type: "image/png" });
       if (navigator.canShare?.({ files: [file] })) {
-        await navigator.share({ files: [file], title: shareTitle });
+        try {
+          await navigator.share({ files: [file], title: shareTitle });
+        } catch (err) {
+          if (err instanceof Error && err.name === "AbortError") {
+            setState("idle");
+            return;
+          }
+          downloadBlob(blob, fileName);
+        }
       } else {
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement("a");
-        a.href = url;
-        a.download = fileName;
-        document.body.appendChild(a);
-        a.click();
-        a.remove();
-        setTimeout(() => URL.revokeObjectURL(url), 0);
+        downloadBlob(blob, fileName);
       }
       setState("idle");
-    } catch (err) {
-      if (err instanceof Error && err.name === "AbortError") {
-        setState("idle");
-        return;
-      }
+    } catch {
       setState("error");
     }
   }
