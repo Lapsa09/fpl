@@ -3,8 +3,7 @@ import { notFound } from "next/navigation";
 import { getCutResult, getPrizeRules, getCutPot } from "@/lib/data";
 import { formatMoney } from "@/lib/format";
 import { cutTitle } from "@/lib/domain/cuts";
-import { StandingsTable } from "@/components/StandingsTable";
-import { ShareImageButton } from "@/components/ShareImageButton";
+import { ShareableStandingsTable } from "@/components/ShareableStandingsTable";
 
 export const dynamic = "force-dynamic";
 
@@ -57,15 +56,15 @@ export default async function CutDetailPage({ params }: { params: Promise<{ id: 
       ) : (
         <p className="text-muted">Sin puntos cargados para este corte.</p>
       )}
-      {result.rows.length > 0 && <StandingsTable rows={result.rows} prizes={prizes} />}
-      <div className="flex flex-wrap items-center gap-4">
-        <span className="text-sm font-semibold text-muted">Compartir</span>
-        <ShareImageButton
-          imagePath={`/cortes/${id}/opengraph-image`}
-          fileName={`premier-arg-corte-${result.cut.order}.png`}
+      {result.rows.length > 0 && (
+        <ShareableStandingsTable
+          rows={result.rows}
           title={cutTitle(result.cut.order, result.cut.name)}
+          prizes={prizes}
+          fileName={`premier-arg-corte-${result.cut.order}.png`}
+          shareTitle={cutTitle(result.cut.order, result.cut.name)}
         />
-      </div>
+      )}
     </div>
   );
 }
