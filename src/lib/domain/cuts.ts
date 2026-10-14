@@ -27,3 +27,9 @@ export function resolveCutWinner(
   )[0];
   return { winner, tied: leaders.length > 1 };
 }
+
+export function cutTitle(order: number, name: string): string {
+  return name.trim().toLowerCase().startsWith("corte")
+    ? name
+    : `Corte ${order} — ${name}`;
+}

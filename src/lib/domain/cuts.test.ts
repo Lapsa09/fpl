@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { resolveCutWinner, standingsForCut } from "./cuts";
+import { cutTitle, resolveCutWinner, standingsForCut } from "./cuts";
 import type { MatchdayInCut } from "./cuts";
 import type { StandingRow, TeamRef } from "./types";
 
@@ -42,5 +42,27 @@ describe("standingsForCut", () => {
     ];
     const rows = standingsForCut(teams, matchdays, "c1");
     expect(rows.find((r) => r.teamId === "a")!.total).toBe(10);
+  });
+});
+
+describe("cutTitle", () => {
+  it("no duplica cuando el nombre ya es 'Corte N'", () => {
+    expect(cutTitle(1, "Corte 1")).toBe("Corte 1");
+  });
+
+  it("detecta el prefijo sin importar mayúsculas", () => {
+    expect(cutTitle(2, "corte 2")).toBe("corte 2");
+  });
+
+  it("preserva el nombre original al detectar el prefijo", () => {
+    expect(cutTitle(3, "  Corte 3  ")).toBe("  Corte 3  ");
+  });
+
+  it("antepone el número de corte cuando el nombre no lo incluye", () => {
+    expect(cutTitle(1, "Play-in")).toBe("Corte 1 — Play-in");
+  });
+
+  it("antepone el número de corte a otros nombres", () => {
+    expect(cutTitle(2, "Fase final")).toBe("Corte 2 — Fase final");
   });
 });

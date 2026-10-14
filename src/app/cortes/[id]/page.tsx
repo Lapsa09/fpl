@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getCutResult, getPrizeRules, getCutPot } from "@/lib/data";
 import { formatMoney } from "@/lib/format";
+import { cutTitle } from "@/lib/domain/cuts";
 import { StandingsTable } from "@/components/StandingsTable";
 import { ShareImageButton } from "@/components/ShareImageButton";
 
@@ -11,7 +12,7 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   const { id } = await params;
   const result = await getCutResult(id);
   if (!result.cut) return { title: "Corte no encontrado" };
-  const title = `Corte ${result.cut.order} — ${result.cut.name}`;
+  const title = cutTitle(result.cut.order, result.cut.name);
   const description = result.winner
     ? `${result.cut.closed ? "Ganador" : "En cabeza"}: ${result.winner.teamName} (${result.winner.total} pts).`
     : `Tabla del corte ${result.cut.name}.`;
@@ -62,7 +63,7 @@ export default async function CutDetailPage({ params }: { params: Promise<{ id: 
         <ShareImageButton
           imagePath={`/cortes/${id}/opengraph-image`}
           fileName={`premier-arg-corte-${result.cut.order}.png`}
-          title={`Corte ${result.cut.order} — ${result.cut.name}`}
+          title={cutTitle(result.cut.order, result.cut.name)}
         />
       </div>
     </div>

@@ -1,6 +1,7 @@
 import { ImageResponse } from "next/og";
 import { getCutResult, getCutPot } from "@/lib/data";
 import { formatMoney } from "@/lib/format";
+import { cutTitle } from "@/lib/domain/cuts";
 import { StandingsCard } from "@/components/share/StandingsCard";
 
 export const runtime = "nodejs";
@@ -25,7 +26,7 @@ export default async function Image({ params }: { params: Promise<{ id: string }
       : null;
   return new ImageResponse(
     <StandingsCard
-      title={result.cut ? `Corte ${result.cut.order} — ${result.cut.name}` : "Corte"}
+      title={result.cut ? cutTitle(result.cut.order, result.cut.name) : "Corte"}
       subtitle={result.cut?.closed ? "Cerrado" : "En juego"}
       rows={result.rows}
       winner={winner}

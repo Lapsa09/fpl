@@ -30,7 +30,7 @@ export function ShareImageButton({
         document.body.appendChild(a);
         a.click();
         a.remove();
-        URL.revokeObjectURL(url);
+        setTimeout(() => URL.revokeObjectURL(url), 0);
       }
       setState("idle");
     } catch (err) {
